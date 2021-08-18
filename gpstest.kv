@@ -1,0 +1,71 @@
+#:kivy 1.0.9
+
+BoxLayout:
+    orientation: 'vertical'
+    Label:
+        size_hint_y: None
+        height: '150dp'
+        text: app.gps_location
+    ToggleButton:
+        size_hint_y: None
+        height: '30dp'
+        state: 'normal'
+        text: 'Use Haversine Speed' if self.state == 'normal' else 'Use Given Speed'
+        on_state: app.set_haversine_speed(True) if self.state == 'down' else app.set_haversine_speed(False) 
+# For development (lets you change the speed manually)
+#    BoxLayout:
+#        orientation: 'horizontal'
+#        Button:
+#            text: 'Speed up'
+#            on_press: app.speed_up()
+#        ToggleButton:
+#            text: 'Use real speed'
+#            on_state: app.toggle_real_speed()
+#        Button:
+#            text: 'Speed down'
+#            on_press: app.speed_down()
+    Label:
+        text: "Volume increase at 50 mph (22.4 met/sec) in percent"
+        height: '25dp'
+        size_hint_y: None
+    TextInput:
+        size_hint_y: None
+        height: '22dp'
+        multiline: False
+        text: '80'
+        halign: 'center'
+        on_text: app.volume_text = self.text
+        on_text_validate: app.prepare_volume()
+    BoxLayout:
+        orientation: 'vertical'
+        padding:'5dp'
+        Label:
+            text: app.text_speed
+            font_size:'25dp'
+        Label:
+            text: app.orig_volume_text
+            font_size: '25dp'
+# can't get WRITE_SETTINGS permission
+#    Button:
+#        size_hint_y: None
+#        height: '30dp'
+#        text: 'Darken Screen (Brightness = 0)'
+#        on_press: app.darken_screen()
+    BoxLayout:
+        size_hint_y: None
+        height: '60dp'
+        padding: '4dp'
+        Button:
+            font_size: '25dp'
+            text: '-'
+            on_press: app.decrease_orig_vol()
+        ToggleButton:
+            text: 'Start' if self.state == 'normal' else 'Stop'
+            state: 'down'
+            on_state:
+                app.start(500, 0) if self.state == 'down' else \
+                app.stop()
+        Button:
+            font_size: '20dp'
+            text: '+'
+            on_press: app.increase_orig_vol()
